@@ -141,10 +141,7 @@ h1 {
 }
 
 .card-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   background: rgba(2, 13, 31, 0.97);
   border: 2px solid var(--dot-color);
   border-radius: 16px;
@@ -152,10 +149,11 @@ h1 {
   color: var(--dot-color);
   font-size: clamp(48px, 12vw, 72px);
   display: none;
-  z-index: 1000;
   box-shadow: 0 0 30px rgba(0, 255, 153, 0.2);
   text-align: center;
   min-width: 140px;
+  margin-top: 20px;
+  max-width: min(280px, 100%);
 }
 
 .card-popup.active {
