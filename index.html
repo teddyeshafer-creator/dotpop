@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dot Match Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Dot Match Game</h1>
+  <div class="info-panel">
+    <div>⏱ Time: <span id="timer">0</span>s</div>
+    <div>✅ Matches: <span id="matchCount">0</span></div>
+  </div>
+  <div class="game-board" id="board"></div>
+  <div class="victory" id="victoryMessage">🎉 You matched them all!</div>
+  <div class="card-popup" id="popup">
+    <div id="popupContent"></div>
+    <button class="card-popup-close" onclick="hidePopupEarly(true)">Close</button>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>
