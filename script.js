@@ -112,7 +112,7 @@ function handleClick(e) {
       };
     }
     clearTimeout(popupTimer);
-    popupTimer = setTimeout(() => hidePopup(), 4000);
+    popupTimer = setTimeout(() => hidePopup(), 1000);
   }
 }
 
