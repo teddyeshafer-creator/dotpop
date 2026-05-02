@@ -3,21 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dot Match Game</title>
+  <title>Dotpop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2300ff99'/></svg>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Dot Match Game</h1>
+  <h1>Dotpop</h1>
+  <p class="subtitle">Match all the icons as fast as you can.</p>
   <div class="info-panel">
     <div>⏱ Time: <span id="timer">0</span>s</div>
     <div>✅ Matches: <span id="matchCount">0</span></div>
+    <div>🏆 <span id="bestTime">Best: --</span></div>
   </div>
-  <div class="game-board" id="board"></div>
-  <div class="victory" id="victoryMessage">🎉 You matched them all!</div>
-  <div class="card-popup" id="popup">
-    <div id="popupContent"></div>
-    <button class="card-popup-close" onclick="hidePopupEarly(true)">Close</button>
+  <div class="game-board" id="board" role="grid" aria-label="Memory match game board"></div>
+  <div class="victory" id="victoryMessage" aria-live="polite">🎉 You matched them all!</div>
+  <button class="play-again-btn" id="playAgainBtn" onclick="playAgain()" aria-label="Play Again">Play Again</button>
+  <div class="card-popup" id="popup" role="dialog" aria-modal="true" aria-label="Card preview">
+    <div id="popupContent" aria-live="polite"></div>
+    <button class="card-popup-close" onclick="hidePopupEarly(true)" aria-label="Close card preview">Close</button>
   </div>
   <script src="script.js" defer></script>
 </body>

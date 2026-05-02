@@ -20,10 +20,12 @@ function generateMatches(count) {
 
 const board = document.getElementById('board');
 const victoryMessage = document.getElementById('victoryMessage');
+const playAgainBtn = document.getElementById('playAgainBtn');
 const popup = document.getElementById('popup');
 const popupContent = document.getElementById('popupContent');
 const matchCount = document.getElementById('matchCount');
 const timerDisplay = document.getElementById('timer');
+const bestTimeDisplay = document.getElementById('bestTime');
 
 let firstPick = null;
 let secondPick = null;
@@ -60,7 +62,16 @@ function createBoard() {
     dot.dataset.symbol = symbol;
     dot.dataset.index = index;
     dot.innerHTML = '?';
+    dot.setAttribute('tabindex', '0');
+    dot.setAttribute('role', 'button');
+    dot.setAttribute('aria-label', `Card ${index + 1}`);
     dot.addEventListener('click', handleClick);
+    dot.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleClick({ currentTarget: dot });
+      }
+    });
     board.appendChild(dot);
   });
 }
@@ -87,6 +98,8 @@ function handleClick(e) {
         victoryMessage.textContent = gameSettings.victoryText;
         victoryMessage.classList.add('active');
         stopTimer();
+        checkBestTime(secondsElapsed);
+        playAgainBtn.classList.add('active');
       }
       postPopupAction = () => resetPicks();
     } else {
@@ -129,8 +142,64 @@ function hidePopupEarly(userInitiated = false) {
 // Expose popup close handler for inline HTML button onclick.
 window.hidePopupEarly = hidePopupEarly;
 
+// Best time helpers
+function getBestTime() {
+  const val = localStorage.getItem('dotpop_bestTime');
+  return val !== null ? parseInt(val, 10) : null;
+}
+
+function checkBestTime(time) {
+  const best = getBestTime();
+  if (best === null || time < best) {
+    localStorage.setItem('dotpop_bestTime', time);
+    updateBestTimeDisplay(time, true);
+  } else {
+    updateBestTimeDisplay(best, false);
+  }
+}
+
+function updateBestTimeDisplay(time, isNew) {
+  if (time === undefined || time === null) {
+    const stored = getBestTime();
+    if (stored === null) {
+      bestTimeDisplay.textContent = 'Best: --';
+      return;
+    }
+    time = stored;
+    isNew = false;
+  }
+  bestTimeDisplay.textContent = isNew ? `Best: ${time}s 🏆` : `Best: ${time}s`;
+}
+
+// Play Again
+function playAgain() {
+  firstPick = null;
+  secondPick = null;
+  matched = 0;
+  secondsElapsed = 0;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  clearTimeout(popupTimer);
+  postPopupAction = null;
+
+  timerDisplay.textContent = '0';
+  matchCount.textContent = '0';
+  victoryMessage.classList.remove('active');
+  playAgainBtn.classList.remove('active');
+  popup.classList.remove('active');
+
+  board.innerHTML = '';
+  generateMatches(gameSettings.dotCount);
+  createBoard();
+  updateBestTimeDisplay();
+}
+
+// Expose play again handler for inline HTML button onclick.
+window.playAgain = playAgain;
+
 // Initialize
 document.documentElement.style.setProperty('--dot-color', gameSettings.dotColor);
 generateMatches(gameSettings.dotCount);
 createBoard();
+updateBestTimeDisplay();
 // startTimer(); // moved to first click
