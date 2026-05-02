@@ -1,6 +1,6 @@
 # Dotpop
 
-A simple JavaScript memory match game.
+Memory Match Game
 
 Built with:
 - HTML
